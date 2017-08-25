@@ -75,21 +75,33 @@ class User_m extends CI_Model {
 		else return false;
 	}
 
-	function check_exist_user($email, $pass=null){
+	function check_exist_user($email, $password=null){
 		$this->db->select('*');
-		$this->db->from('users');
-		if($pass==null)
-			$this->db->where('email_login', $email);
-		else
-			$this->db->where("email_login ='".$email."' AND password = md5('".$pass."')");
-
+		$this->db->from('user');
+		if($pass==null){
+			$this->db->where('email', $email);
+                } else {
+			$this->db->where('email', $email);
+                        $this->db->where('password', $password);
+                        
+                }
+                
+                $this->db->join('user_profile', "user_profile.id_user = user.id_user");
+                
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0)
 			return $query->row();
 		else return false;
 	}
-
+        
+        function get_salt($email) {
+            $this->db->select('salt');
+            $this->db->where('email', $email);
+            $res = $this->db->get('user');
+            return $res->row('salt');
+        }
+        
 	function update_password($email, $new_pass){
 		$this->db->where('email_login', $email);
 		$this->db->update('users', array('password' => md5($new_pass)));
