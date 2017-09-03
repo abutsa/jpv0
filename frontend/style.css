@@ -1390,7 +1390,7 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #primary-menu.style-2.cent
 #primary-menu.style-3 > ul > li.current > a {
 	color: #FFF;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-	background-color: #FFFF;
+	background-color: #037099;
 }
 
 
@@ -1499,7 +1499,7 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #primary-menu.style-2.cent
 #primary-menu.sub-title > ul > li.current > a,
 #primary-menu.sub-title > div > ul > li:hover > a,
 #primary-menu.sub-title > div > ul > li.current > a {
-	background-color: #FD8600;
+	background-color: #037099;
 	color: #FFF;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 	border-top-color: rgba(0,0,0,0.1);
@@ -3042,10 +3042,10 @@ body:not(.stretched) .slider-parallax .slider-parallax-inner { left: auto; }
 }
 
 .slider-caption h2 {
-	font-size: 50px;
-	letter-spacing: 1px;
-	text-transform: none;
-	font-weight: 600;
+	font-size: 64px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: 700;
 	line-height: 1;
 	margin-bottom: 30px;
 }
