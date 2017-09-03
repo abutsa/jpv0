@@ -14,7 +14,7 @@ class MY_Controller extends CI_Controller
 
 		$this->is_logged_in();
 		$this->cms_has_access();
-		
+		/*
 		$this->load->model('Course_m');	
 		$this->load->model('Teacher_m');
 		$this->load->model('Student_m');
@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller
 		$this->load->model('Content_m');
 		$this->load->model('User_m');
 		$this->load->model('Common');
-
+                */
 		// load language in session, if no language session then back to config language
 		if($this->session->userdata('language')==""){
 			$this->lang->load('id','indonesia');
