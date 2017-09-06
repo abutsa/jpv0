@@ -269,7 +269,7 @@ class Auth extends MY_Controller {
     }
 
     function login() {
-
+        $this->load->model('User_m');
         //cek is login
         if ($this->is_logged_in()) {
             redirect('');
@@ -292,18 +292,22 @@ class Auth extends MY_Controller {
             $pass_hash = $this->getSaltedHash($password, $salt);
 
             //login
-            $userdata = $this->Users_model->check_exist_user($email, $pass_hash);
+            $userdata = $this->User_m->check_exist_user($email, $pass_hash);
 
             if ($userdata) {
                 //set user data
                 $this->session->set_userdata('logged', 'in');
                 $this->session->set_userdata('userid', $userdata->id_user);
-                $this->session->set_userdata('email', $userdata->email);
+                $this->session->set_userdata('email', $userdata->email_login);
                 $this->session->set_userdata('first_name', $userdata->first_name);
                 $this->session->set_userdata('last_name', $userdata->last_name);
                 $this->session->set_userdata('admin', $userdata->admin);
 
-                redirect('');
+                echo "berhasil";
+                
+                $response['status'] = '200';
+                $response['form_login_error'] = "login berhasil";
+                //redirect('');
             }
         } else {
             $response['status'] = '204';
@@ -314,4 +318,15 @@ class Auth extends MY_Controller {
         $this->load->view('front/login_register_page', $response);
     }
 
+    function get_salt($email) {
+        return $this->User_m->get_salt($email);
+    }
+    
+    function getSaltedHash($password, $salt) {
+        $hash = $password . $salt;
+        for ($i = 0; $i < 50; $i++) {
+            $hash = hash('sha512', $password . $hash . $salt);
+        }
+        return $hash;
+    }
 }

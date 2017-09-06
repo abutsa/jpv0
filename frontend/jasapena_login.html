@@ -8,15 +8,15 @@
 	<!-- Stylesheets
 	============================================= -->
 	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/style.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/swiper.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/dark.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/font-icons.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/animate.css" type="text/css" />
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/magnific-popup.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<link rel="stylesheet" href="css/swiper.css" type="text/css" />
+	<link rel="stylesheet" href="css/dark.css" type="text/css" />
+	<link rel="stylesheet" href="css/font-icons.css" type="text/css" />
+	<link rel="stylesheet" href="css/animate.css" type="text/css" />
+	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
-	<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 	<!-- Document Title
@@ -48,8 +48,8 @@
 					<!-- Logo
 					============================================= -->
 					<div id="logo">
-						<a href="index.html" class="standard-logo" data-dark-logo="<?php echo base_url() ?>assets/images/jasa-pena-light.png"><img src="<?php echo base_url() ?>assets/images/jasa-pena-light.png" alt="Canvas Logo"></a>
-						<!--<a href="index.html" class="retina-logo" data-dark-logo="<?php echo base_url() ?>assets/images/logo-dark@2x.png"><img src="<?php echo base_url() ?>assets/images/logo@2x.png" alt="Canvas Logo"></a>-->
+						<a href="index.html" class="standard-logo" data-dark-logo="images/jasa-pena-light.png"><img src="images/jasa-pena-light.png" alt="Canvas Logo"></a>
+						<a href="index.html" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img src="images/logo@2x.png" alt="Canvas Logo"></a>
 					</div><!-- #logo end -->
 
 					<!-- Primary Navigation
@@ -138,7 +138,7 @@
 					<div class="col_one_third nobottommargin">
 
 						<div class="well well-lg nobottommargin">
-							<form id="login-form" name="login-form" class="nobottommargin" action="<?=site_url($this->uri->uri_string());?>" method="post">
+							<form id="login-form" name="login-form" class="nobottommargin" action="#" method="post">
 
 								<h3>Login ke akun anda</h3>
 
@@ -151,11 +151,7 @@
 									<label for="login-form-password">Password :</label>
 									<input type="password" id="login-form-password" name="login-form-password" value="" class="form-control" />
 								</div>
-                                                                
-                                                                <div>
-                                                                        <?php if (isset($form_login_error)) echo $form_login_error;  ?>
-                                                                </div>
-                                                                
+
 								<div class="col_full nobottommargin">
 									<button class="button button-3d nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
 									<a href="#" class="fright">Lupa Password?</a>
@@ -172,16 +168,16 @@
 
 						<h3>Belum Punya Akun ? Register Sekarang Juga.</h3>
 
-						<form id="register-form" name="register-form" class="nobottommargin" action="<?=site_url('user/user_add');?>" method="post">
+						<form id="register-form" name="register-form" class="nobottommargin" action="#" method="post">
 
 							<div class="col_half">
-								<label for="register-form-name-first">Nama Depan :</label>
-								<input type="text" id="register-form-name-first" name="register-form-name-first" value="" class="form-control" />
+								<label for="register-form-name">Nama Depan :</label>
+								<input type="text" id="register-form-name" name="register-form-name" value="" class="form-control" />
 							</div>
 
 							<div class="col_half col_last">
-								<label for="register-form-name-last">Nama Belakang :</label>
-								<input type="text" id="register-form-name-last" name="register-form-name-last" value="" class="form-control" />
+								<label for="register-form-username">Nama Belakang :</label>
+								<input type="text" id="register-form-username" name="register-form-username" value="" class="form-control" />
 							</div>
 
 							<div class="clear"></div>
@@ -203,14 +199,10 @@
 								<input type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control" />
 							</div>
 
-                                                        <div>
-                                                                <?php if (isset($form_register_error)) echo $form_register_error;  ?>
-                                                        </div>
-                                                        
 							<div class="clear"></div>
 
 							<div class="col_full nobottommargin">
-								<button class="button button-3d button-black nomargin" id="register-form-submit" type="submit" name="register-form-submit" value="register">Register Now</button>
+								<button class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>
 							</div>
 
 						</form>
@@ -300,12 +292,12 @@
 
 	<!-- External JavaScripts
 	============================================= -->
-	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/plugins.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/plugins.js"></script>
 
 	<!-- Footer Scripts
 	============================================= -->
-	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/functions.js"></script>
+	<script type="text/javascript" src="js/functions.js"></script>
 
 </body>
 </html>

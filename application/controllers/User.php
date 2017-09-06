@@ -6,6 +6,9 @@ class User extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        
+        $this->load->model('Common');
+        $this->load->model('User_m');
     }
 
     // admin, melihat semua user
@@ -147,12 +150,12 @@ class User extends MY_Controller {
 
     public function user_add() {
 
-        $this->load->helper(array('form'));
+        $this->load->helper(array('form','myfunction_helper'));
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('register-form-email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('register-form-password', 'Password', 'required|min_length[6]');
-        $this->form_validation->set_rules('register-form-repassword', 'Password Verification', 'required|matches[pass]');
+        $this->form_validation->set_rules('register-form-repassword', 'Password Verification', 'required|matches[register-form-password]');
         $this->form_validation->set_rules('register-form-name-first', 'First Name', 'required|alpha');
         $this->form_validation->set_rules('register-form-name-last', 'Last Name', 'alpha');
 
@@ -161,7 +164,7 @@ class User extends MY_Controller {
             $response['form_register_error'] = validation_errors();
         } else {
             // cek email sudah digunakan atau belum
-            $check_exist_email = $this->User_m->check_exist_user($this->input->post('email', TRUE));
+            $check_exist_email = $this->User_m->check_exist_user($this->input->post('register-form-email', TRUE));
             if ($check_exist_email <> false)
                 $response = array(
                     'status' => '204',
@@ -174,7 +177,7 @@ class User extends MY_Controller {
                 $salt = generate_random_string('mix', 128);
 
                 $data = array(
-                    'email' => $this->input->post('register-form-email', TRUE),
+                    'email_login' => $this->input->post('register-form-email', TRUE),
                     'password' => $this->getSaltedHash($this->input->post('register-form-password', TRUE), $salt),
                     'first_name' => $this->input->post('register-form-name-first', TRUE),
                     'last_name' => $this->input->post('register-form-name-last', TRUE),
@@ -187,9 +190,18 @@ class User extends MY_Controller {
                 $create = $this->Common->add_to_table('user', $data);
 
                 if ($create->status) {
+                    
+                    //user profile
+                    $profile = array(
+                        'id_user' =>  $create->output,
+                        'full_name' => $this->input->post('register-form-name-first', TRUE).' '.$this->input->post('register-form-name-last', TRUE)
+                    );
+                    
+                    $insert_profile = $this->Common->add_to_table('user_profile', $profile);
+                    
                     if ($this->session->userdata('logged') == "") {
                         $this->session->set_userdata('logged', 'in');
-                        $this->session->set_userdata('userid', $new_user_id);
+                        $this->session->set_userdata('userid', $create->output);
                         $this->session->set_userdata('email', $this->input->post('login-form-email', TRUE));
                         $this->session->set_userdata('first_name', $this->input->post('register-form-name-first', TRUE));
                         $this->session->set_userdata('last_name', $this->input->post('register-form-name-last', TRUE));
@@ -198,14 +210,17 @@ class User extends MY_Controller {
 
                     $response['status'] = '200';
 
+                    redirect('');
+                    
                     // get email template from database
                     //$get_template = $this->Content_m->get_email_templates(array('id' => 'post-registration-' . $this->session->userdata('language')));
                     //$template = htmlspecialchars_decode($get_template->row()->content);
                     // prepare data to replace 
-                    $content = $template;
-                    $content = str_replace('[FULL_NAME]', $this->session->userdata('fn') . ($this->session->userdata('ln') == "" ? "" : $this->session->userdata('ln')), $content);
-                    $content = str_replace('[FIRST_NAME]', $this->session->userdata('fn'), $content);
-                    $content = str_replace('[LAST_NAME]', $this->session->userdata('ln'), $content);
+                    
+                    /*$content = $template;
+                    $content = str_replace('[FULL_NAME]', $this->session->userdata('first_name') . ($this->session->userdata('last_name') == "" ? "" : $this->session->userdata('last_name')), $content);
+                    $content = str_replace('[FIRST_NAME]', $this->session->userdata('first_name'), $content);
+                    $content = str_replace('[LAST_NAME]', $this->session->userdata('last_name'), $content);
                     $content = str_replace('[EMAIL]', $this->session->userdata('email'), $content);
                     $content = str_replace('[USER_ID]', $this->session->userdata('userid'), $content);
                     $get_email_cs = $this->Content_m->get_option_by_param('company_email_customer_service');
@@ -238,9 +253,10 @@ class User extends MY_Controller {
                     } else {
                         $this->logging->insert_event_logging('send_email_new_member', '', 'true', 'Message sent');
                     }
-
+                    */
+                    
                     // create online test assignment if any and if level is tutor
-                    if ($this->session->userdata('level') == "teacher") {
+                    /*if ($this->session->userdata('level') == "teacher") {
                         $this->load->model('Otest_m', 'otest');
                         $this->load->library('notification');
                         $auto_assignment = $this->otest->get_test_data(array('is_active' => '1', 'assign_to_new_tutor' => '1'));
@@ -278,17 +294,19 @@ class User extends MY_Controller {
                                 $this->notification->insert($notif);
                             }
                         }
-                    }
+                    }*/
                 }
                 else {
                     $response['status'] = '204';
                     $response['message'] = $create->output;
+                    
+                    //redirect('auth/login');
                 }
             }
         }
         // }
         // echo json_encode($response);
-        $this->load->view('login_register_page', $response);
+        $this->load->view('front/login_register_page', $response);
     }
 
     public function user_update() {
@@ -1763,5 +1781,20 @@ class User extends MY_Controller {
 
         redirect();
     }
+    
+    function getSaltedHash($password, $salt) {
+        $hash = $password . $salt;
+        for ($i = 0; $i < 50; $i++) {
+            $hash = hash('sha512', $password . $hash . $salt);
+        }
+        return $hash;
+    }
 
+    
+
+    function test_exist_email() {
+        $res = $this->User_m->check_exist_user('sirnordy@gmail.com');
+        var_dump($res);
+    }
+    
 }
